@@ -54,6 +54,8 @@ src/
 
 - /docs/ui.md
 - /docs/data-fetching.md
+- /docs/data-mutations.md
+- /docs/auth.md
 
 ## Important Notes
 
