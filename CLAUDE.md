@@ -53,6 +53,7 @@ src/
 **ALWAYS** consult the relevant documentation file in the `/docs` directory before generating any code. This is mandatory — do not write or suggest code without first reading the applicable docs. The `/docs` directory contains authoritative references for this project's conventions, APIs, and patterns. If a relevant doc exists, it takes precedence over general knowledge.
 
 - /docs/ui.md
+- /docs/data-fetching.md
 
 ## Important Notes
 
