@@ -3,6 +3,37 @@ import { db } from '@/db'
 import { workouts, workoutExercises, exercises, sets } from '@/db/schema'
 import { and, eq } from 'drizzle-orm'
 
+export async function getWorkoutById(workoutId: number) {
+  const { userId } = await auth()
+  if (!userId) throw new Error('Unauthorized')
+
+  const result = await db
+    .select()
+    .from(workouts)
+    .where(and(eq(workouts.id, workoutId), eq(workouts.userId, userId)))
+    .limit(1)
+
+  return result[0] ?? null
+}
+
+export async function updateWorkout(data: {
+  workoutId: number
+  name?: string
+  date: string
+}) {
+  const { userId } = await auth()
+  if (!userId) throw new Error('Unauthorized')
+
+  await db
+    .update(workouts)
+    .set({
+      name: data.name ?? null,
+      date: data.date,
+      updatedAt: new Date(),
+    })
+    .where(and(eq(workouts.id, data.workoutId), eq(workouts.userId, userId)))
+}
+
 export async function createWorkout(data: { name?: string; date: string }) {
   const { userId } = await auth()
   if (!userId) throw new Error('Unauthorized')
