@@ -48,6 +48,17 @@ src/
     globals.css     # Global styles and Tailwind directives
 ```
 
+## CRITICAL: Documentation-First Rule
+
+**ALWAYS** consult the relevant documentation file in the `/docs` directory before generating any code. This is mandatory — do not write or suggest code without first reading the applicable docs. The `/docs` directory contains authoritative references for this project's conventions, APIs, and patterns. If a relevant doc exists, it takes precedence over general knowledge.
+
+- /docs/ui.md
+- /docs/data-fetching.md
+- /docs/data-mutations.md
+- /docs/auth.md
+- /docs/routing.md
+- /docs/server-components.md
+
 ## Important Notes
 
 - Next.js 16 uses React 19, which has breaking changes from React 18 (e.g., `react-hook-form` may require updates)
