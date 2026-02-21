@@ -1,5 +1,6 @@
 import { format, parseISO } from "date-fns";
 import { DumbbellIcon } from "lucide-react";
+import Link from "next/link";
 
 import {
   Card,
@@ -78,9 +79,13 @@ export default async function DashboardPage({
             </div>
           ) : (
             workoutsData.map((workout) => (
-              <Card
+              <Link
                 key={workout.id}
-                className="border-zinc-800 bg-zinc-900 shadow-none"
+                href={`/dashboard/workout/${workout.id}`}
+                className="block"
+              >
+              <Card
+                className="border-zinc-800 bg-zinc-900 shadow-none transition-colors hover:border-zinc-600 hover:bg-zinc-800"
               >
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-base font-semibold text-zinc-100">
@@ -119,6 +124,7 @@ export default async function DashboardPage({
                   ))}
                 </CardContent>
               </Card>
+              </Link>
             ))
           )}
         </div>
