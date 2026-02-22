@@ -59,6 +59,16 @@ src/
 - /docs/routing.md
 - /docs/server-components.md
 
+## CRITICAL: Skill Creation Rule
+
+When creating a new skill, **always** use the `skill-creator` skill via the Skill tool — never manually scaffold skill directories by hand:
+
+```
+skill: "skill-creator"
+```
+
+The `skill-creator` skill handles scaffolding, SKILL.md generation, and validation automatically. Manual creation bypasses this and leads to inconsistent structure.
+
 ## Important Notes
 
 - Next.js 16 uses React 19, which has breaking changes from React 18 (e.g., `react-hook-form` may require updates)

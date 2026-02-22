@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/card";
 import { getWorkoutsForDate } from "@/data/workouts";
 import DatePicker from "./DatePicker";
+import WorkoutChart from "./WorkoutChart";
 
 export default async function DashboardPage({
   searchParams,
@@ -36,6 +37,8 @@ export default async function DashboardPage({
         </div>
 
         <div className="flex flex-col gap-4">
+            <WorkoutChart />
+
             <div className="flex items-center justify-between">
               <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                 Workouts

@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs/server'
 import { db } from '@/db'
 import { workouts, workoutExercises, exercises, sets } from '@/db/schema'
-import { and, eq } from 'drizzle-orm'
+import { and, eq, gte, sql } from 'drizzle-orm'
 
 export async function getWorkoutById(workoutId: number) {
   const { userId } = await auth()
@@ -127,5 +127,33 @@ export async function getWorkoutsForDate(date: string) {
         name: e.name,
         sets: e.sets,
       })),
+  }))
+}
+
+export async function getWorkoutVolumeHistory(): Promise<
+  { date: string; volume: number }[]
+> {
+  const { userId } = await auth()
+  if (!userId) throw new Error('Unauthorized')
+
+  const thirtyDaysAgo = new Date()
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 29)
+  const fromDate = thirtyDaysAgo.toISOString().slice(0, 10)
+
+  const rows = await db
+    .select({
+      date: workouts.date,
+      volume: sql<number>`SUM(CAST(${sets.reps} AS numeric) * CAST(${sets.weight} AS numeric))`,
+    })
+    .from(workouts)
+    .leftJoin(workoutExercises, eq(workoutExercises.workoutId, workouts.id))
+    .leftJoin(sets, eq(sets.workoutExerciseId, workoutExercises.id))
+    .where(and(eq(workouts.userId, userId), gte(workouts.date, fromDate)))
+    .groupBy(workouts.date)
+    .orderBy(workouts.date)
+
+  return rows.map((r) => ({
+    date: r.date,
+    volume: Number(r.volume ?? 0),
   }))
 }
