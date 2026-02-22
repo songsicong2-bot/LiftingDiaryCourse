@@ -1,6 +1,8 @@
 import { format, parseISO } from "date-fns";
-import { DumbbellIcon } from "lucide-react";
+import { DumbbellIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
 
 import {
   Card,
@@ -33,24 +35,24 @@ export default async function DashboardPage({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-          {/* Inline calendar */}
-          <div className="flex flex-col gap-3">
-            <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Select Date
-            </label>
-            <DatePicker selectedDate={selectedDate} />
-          </div>
-
-          {/* Workout list */}
-          <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                 Workouts
               </label>
-              <span className="text-xs text-muted-foreground font-medium">
-                {format(displayDate, "do MMM yyyy")}
-              </span>
+              <div className="flex items-center gap-3">
+                <Button
+                  asChild
+                  size="sm"
+                  className="bg-orange-500 hover:bg-orange-600 text-white shadow-sm font-medium gap-1.5"
+                >
+                  <Link href={`/dashboard/workout/new?date=${selectedDate}`}>
+                    <PlusIcon className="size-3.5" />
+                    Log New Workout
+                  </Link>
+                </Button>
+                <DatePicker selectedDate={selectedDate} />
+              </div>
             </div>
 
             {workoutsData.length === 0 ? (
@@ -114,7 +116,6 @@ export default async function DashboardPage({
                 </Link>
               ))
             )}
-          </div>
         </div>
       </main>
     </div>
