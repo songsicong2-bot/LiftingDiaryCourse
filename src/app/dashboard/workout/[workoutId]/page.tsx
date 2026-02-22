@@ -4,7 +4,9 @@ import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
 import { getWorkoutById } from '@/data/workouts'
+import { getAllExercises, getWorkoutWithExercisesAndSets } from '@/data/exercises'
 import { EditWorkoutForm } from './EditWorkoutForm'
+import { ExerciseLogger } from './ExerciseLogger'
 
 interface EditWorkoutPageProps {
   params: Promise<{ workoutId: string }>
@@ -17,8 +19,13 @@ export default async function EditWorkoutPage({
   const id = parseInt(workoutId, 10)
   if (isNaN(id)) notFound()
 
-  const workout = await getWorkoutById(id)
-  if (!workout) notFound()
+  const [workout, workoutDetail, allExercises] = await Promise.all([
+    getWorkoutById(id),
+    getWorkoutWithExercisesAndSets(id),
+    getAllExercises(),
+  ])
+
+  if (!workout || !workoutDetail) notFound()
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
@@ -47,7 +54,7 @@ export default async function EditWorkoutPage({
               Edit Workout
             </h1>
             <p className="text-sm text-zinc-400 mt-1">
-              Update your workout details.
+              Update workout details and log exercises.
             </p>
           </div>
         </div>
@@ -56,6 +63,14 @@ export default async function EditWorkoutPage({
           workoutId={workout.id}
           initialName={workout.name}
           initialDate={workout.date}
+        />
+
+        <div className="border-t border-zinc-800" />
+
+        <ExerciseLogger
+          workoutId={id}
+          exercises={workoutDetail.exercises}
+          allExercises={allExercises}
         />
       </main>
     </div>
