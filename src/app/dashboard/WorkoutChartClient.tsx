@@ -71,7 +71,7 @@ export function WorkoutChartClient({ data }: WorkoutChartClientProps) {
               labelFormatter={(label: string) =>
                 format(parseISO(label), "do MMM yyyy")
               }
-              formatter={(value: number | string) => [
+              formatter={(value) => [
                 `${Number(value).toLocaleString()} kg`,
                 "Volume",
               ]}
